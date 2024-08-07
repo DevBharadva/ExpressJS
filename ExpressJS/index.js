@@ -33,48 +33,35 @@
 //     console.log(`server start http://localhost:4040`);
 // })
 
-/* Day-02 in ExpressJS */
+/* Day-03 in ExpressJS */
 
 const express = require('express')
+const data = require('./mock_data.json');
+console.log(data);
 
 const server = express();
-// CRUD -> create(POST),Read(GET),(Update(PuT,PATCH),(Delete(delete)))
 
-server.get('/',(req,res)=> {
+let middleware = (req,res,next)=>{
+    // console.log(req.query);
+    if(req.query.password === '7984'){
+        console.log('success');
+        next();
+    }else{
+        return res.json({message:'Enter a currect Password'})
+    }
+}
+
+// server.use(middleware)
+
+server.get('/',middleware,(req,res)=> {
     res.setHeader('content-type','text/html');
     res.write("<h1>Wlcome to ExpressJS<h1/>");
     res.end();
 });
 
-server.get('/user',(req,res)=>{
-    res.status(200);
-    res.json({message:'User GET Method'})
+server.get('/mock',(req,res)=>{
+    res.json(JSON.parse(data))
 })
-server.post('/user',(req,res)=>{
-    res.status(200);
-    res.json({message:'User post Method'})
-})
-server.put('/user',(req,res)=>{
-    res.status(200);
-    res.json({message:'User put Method'})
-})
-server.patch('/user',(req,res)=>{
-    res.status(200);
-    res.json({message:'User Patch Method'})
-})
-server.delete('/user',(req,res)=>{
-    res.status(200);
-    res.json({message:'User delete Method'})
-})
-
-
-
-server.get('/login',(req,res)=> {
-    res.setHeader('content-type','text/html');
-    res.write("<h1>Login-page in ExpressJS<h1/>");
-    res.end();
-});
-
 
 server.listen(4040,()=>{
     console.log(`server start http://localhost:4040`);
