@@ -1,68 +1,82 @@
-// npm init / /
 
-/* Day-01 in ExpressJS */
-// const express = require('express')
+/* Day-04 */
 
-// const server = express();
-
-// server.get('/',(req,res)=> {
-//     res.setHeader('content-type','text/html');
-//     res.write("<h1>Wlcome to ExpressJS<h1/>");
-//     res.end();
-// });
-
-// server.get('/login',(req,res)=> {
-//     res.setHeader('content-type','text/html');
-//     res.write("<h1>Login-page in ExpressJS<h1/>");
-//     res.end();
-// });
-
-// server.get('/about',(req,res)=> {
-//     res.setHeader('content-type','text/html');
-//     res.write("<h1>About to ExpressJS<h1/>");
-//     res.end();
-// });
-
-// server.get('/singup',(req,res)=> {
-//     res.setHeader('content-type','text/html');
-//     res.write("<h1>signup to ExpressJS<h1/>");
-//     res.end();
-// });
-
-// server.listen(4040,()=>{
-//     console.log(`server start http://localhost:4040`);
-// })
-
-/* Day-03 in ExpressJS */
-
-const express = require('express')
-const data = require('./mock_data.json');
-console.log(data);
+const express = require('express');
 
 const server = express();
 
-let middleware = (req,res,next)=>{
-    // console.log(req.query);
-    if(req.query.password === '7984'){
-        console.log('success');
+
+
+//built-in middleware
+
+// server.use(express.json());
+// server.use(express.urlencoded({extended: true}));
+// const middleWare = (req,res,next)=>{
+//     console.log(req.body);
+//     if(req.body.age >= 10){
+//         console.log('Success');
+//         next();
+//     }else{
+//         res.status(401);
+//         return res.json({message:'no way'});
+//     }
+// };
+
+// server.use(express.urlencoded({extended: false}));
+// const middleWare = (req,res,next)=>{
+//     console.log(req.body);
+//     if(req.body.age > 10){
+//         console.log('Success');
+//         next();
+//     }else{
+//         res.status(401);
+//         return res.json({message:'no way'});
+//     }
+// };
+
+server.use("/dev",express.static("public"))
+const middleWare = (req,res,next)=>{
+    console.log(req.body);
+    if(req.body.age > 10){
+        console.log('Success');
         next();
     }else{
-        return res.json({message:'Enter a currect Password'})
+        res.status(401);
+        return res.json({message:'no way'});
     }
-}
+};
 
-// server.use(middleware)
-
-server.get('/',middleware,(req,res)=> {
-    res.setHeader('content-type','text/html');
-    res.write("<h1>Wlcome to ExpressJS<h1/>");
+server.get('/', middleWare,(req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    res.send('Hello, world hh   ');
     res.end();
 });
 
-server.get('/mock',(req,res)=>{
-    res.json(JSON.parse(data))
-})
 
-server.listen(4040,()=>{
-    console.log(`server start http://localhost:4040`);
-})
+
+//third-party middleware
+
+// let loggerFun = (req,res,next) =>{
+//     console.log(req.url , "\t" , req.method , "\t");
+//     next();
+//  };
+//  server.use(loggerFun);
+
+// const morgan = require('morgan');
+
+// server.use(morgan('tiny'));
+
+// server.use(morgan('combined'));
+
+// server.use(morgan());
+
+
+//  server.get('/',(req, res) => {
+//     res.setHeader('Content-Type', 'application/json');
+//     res.json({message:'Hello, world'});
+// });
+
+
+server.listen(4000,()=>{
+    console.log(`Server is running on port http://localhost:4000`);  
+});
