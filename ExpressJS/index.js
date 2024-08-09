@@ -1,82 +1,29 @@
-
-/* Day-04 */
+/* Day-05 */
 
 const express = require('express');
-
-const server = express();
-
-
-
-//built-in middleware
-
-// server.use(express.json());
-// server.use(express.urlencoded({extended: true}));
-// const middleWare = (req,res,next)=>{
-//     console.log(req.body);
-//     if(req.body.age >= 10){
-//         console.log('Success');
-//         next();
-//     }else{
-//         res.status(401);
-//         return res.json({message:'no way'});
-//     }
-// };
-
-// server.use(express.urlencoded({extended: false}));
-// const middleWare = (req,res,next)=>{
-//     console.log(req.body);
-//     if(req.body.age > 10){
-//         console.log('Success');
-//         next();
-//     }else{
-//         res.status(401);
-//         return res.json({message:'no way'});
-//     }
-// };
-
-// server.use("/dev",express.static("public"))
-// const middleWare = (req,res,next)=>{
-//     console.log(req.body);
-//     if(req.body.age > 10){
-//         console.log('Success');
-//         next();
-//     }else{
-//         res.status(401);
-//         return res.json({message:'no way'});
-//     }
-// };
-
-// server.get('/', middleWare,(req, res) => {
-//     res.setHeader('Content-Type', 'text/plain');
-//     res.send('Hello, world hh   ');
-//     res.end();
-// });
-
-
-
-//third-party middleware
-
-// let loggerFun = (req,res,next) =>{
-//     console.log(req.url , "\t" , req.method , "\t");
-//     next();
-//  };
-//  server.use(loggerFun);
-
+const app = express();
 const morgan = require('morgan');
+const product = require('./mock_data.json')
 
-// server.use(morgan('tiny'));
+app.use(express.json());
 
-// server.use(morgan('combined'));
+app.use(express.urlencoded({extended:true}));
 
-server.use(morgan('dev'));
+app.use(morgan('dev'))
 
+// app.get('/',(req,res)=>{
+//     res.end('Welcome to Your own server');
+// })
 
- server.get('/',(req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.json({message:'Hello, world'});
-});
+app.post('/product',(req,res)=>{
+    product.push(req.body);
+    res.json({product: req.body, message:'product Added success'});
+})
 
+app.get('/product',(req,res)=>{
+    res.json(product)
+})
 
-server.listen(4000,()=>{
-    console.log(`Server is running on port http://localhost:4000`);  
-});
+app.listen(4040,()=>{
+    console.log('server start');   
+})
