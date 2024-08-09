@@ -34,23 +34,23 @@ const server = express();
 //     }
 // };
 
-server.use("/dev",express.static("public"))
-const middleWare = (req,res,next)=>{
-    console.log(req.body);
-    if(req.body.age > 10){
-        console.log('Success');
-        next();
-    }else{
-        res.status(401);
-        return res.json({message:'no way'});
-    }
-};
+// server.use("/dev",express.static("public"))
+// const middleWare = (req,res,next)=>{
+//     console.log(req.body);
+//     if(req.body.age > 10){
+//         console.log('Success');
+//         next();
+//     }else{
+//         res.status(401);
+//         return res.json({message:'no way'});
+//     }
+// };
 
-server.get('/', middleWare,(req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send('Hello, world hh   ');
-    res.end();
-});
+// server.get('/', middleWare,(req, res) => {
+//     res.setHeader('Content-Type', 'text/plain');
+//     res.send('Hello, world hh   ');
+//     res.end();
+// });
 
 
 
@@ -62,19 +62,19 @@ server.get('/', middleWare,(req, res) => {
 //  };
 //  server.use(loggerFun);
 
-// const morgan = require('morgan');
+const morgan = require('morgan');
 
 // server.use(morgan('tiny'));
 
 // server.use(morgan('combined'));
 
-// server.use(morgan());
+server.use(morgan('dev'));
 
 
-//  server.get('/',(req, res) => {
-//     res.setHeader('Content-Type', 'application/json');
-//     res.json({message:'Hello, world'});
-// });
+ server.get('/',(req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.json({message:'Hello, world'});
+});
 
 
 server.listen(4000,()=>{
