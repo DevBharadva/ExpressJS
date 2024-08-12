@@ -1,30 +1,21 @@
-/* Day-06 - api Create */
+/* Day-07 - MVC Folder Strucer (MVC - Model-View-Controller) */
 
 const express = require('express');
 const app = express();
-const morgan = require('morgan');
-const product = require('./mock_data.json')
+const morgan  = require('morgan');
+const productRoutes = require('./routes/product.routes');
+
 
 app.use(express.json());
-
 app.use(express.urlencoded({extended:true}));
+app.use(morgan('dev'));
 
-app.use(morgan('dev'))
-
-// app.get('/',(req,res)=>{
-//     res.end('Welcome to Your own server');
-// })
-
-app.post('/product',(req,res)=>{
-    product.push(req.body);
-    res.json({product: req.body, message:'product Added success'});
+app.get('/',(req,res)=>{
+    res.end("Welcome to Express Server");
 })
 
-app.get('/product',(req,res)=>{
-    res.json(product)
-})
+app.use("/api/product",productRoutes);
 
-app.listen(4040,()=>{
-    console.log('server start');   
+app.listen(1020,()=>{
+    console.log("Own server started");
 })
-
