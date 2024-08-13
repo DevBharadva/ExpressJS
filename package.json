@@ -4,13 +4,14 @@
   "main": "user.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon user.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
+    "mongoose": "^8.5.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
