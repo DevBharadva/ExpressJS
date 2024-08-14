@@ -1,7 +1,7 @@
 const express = require('express')
 
 const productRoutes = express();
-const { addNewProduct } = require('../controller/product.controller')
+const { addNewProduct,getAllProducts,getProduct } = require('../controller/product.controller')
 // const {
 //     addNewProduct,
 //     getAllProducts,
@@ -15,10 +15,10 @@ const { addNewProduct } = require('../controller/product.controller')
 productRoutes.post('/', addNewProduct)
 
 // Get All Products - Read
-// productRoutes.get('/',getAllProducts)
+productRoutes.get('/',getAllProducts)
 
 // Get Single Product - Read
-// productRoutes.get('/:id',getProduct)
+productRoutes.get('/get-product',getProduct)
 
 // Replace Data - PUT
 // productRoutes.put('/:id',replaceProduct)
