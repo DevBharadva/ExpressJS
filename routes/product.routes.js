@@ -1,7 +1,7 @@
 const express = require('express')
 
 const productRoutes = express();
-const { addNewProduct,getAllProducts,getProduct } = require('../controller/product.controller')
+const { addNewProduct,getAllProducts,getProduct,UpdateProduct,DeleteProduct } = require('../controller/product.controller')
 // const {
 //     addNewProduct,
 //     getAllProducts,
@@ -18,15 +18,15 @@ productRoutes.post('/', addNewProduct)
 productRoutes.get('/',getAllProducts)
 
 // Get Single Product - Read
-productRoutes.get('/get-product',getProduct)
+productRoutes.get('/',getProduct)
 
 // Replace Data - PUT
 // productRoutes.put('/:id',replaceProduct)
 
 // Update Data - PATCH
-// productRoutes.patch('/:id',upateProduct)
+productRoutes.patch('/get-product',UpdateProduct)
 
 // Delete Data - DELETE
-// productRoutes.delete('/:id',deletePreoduct)
+productRoutes.delete('/delete',DeleteProduct)
 
 module.exports = productRoutes;

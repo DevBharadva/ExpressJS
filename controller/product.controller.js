@@ -77,3 +77,27 @@ exports.getProduct = async (req,res)=>{
         res.status(500).json({message:"Internal Server Error..."});
     }
 };
+
+exports.UpdateProduct = async (req,res)=>{
+    try {
+        const productId = req.body.productId;
+        // const updateProductName = req.body.productName;
+        // const updateQuntity = req.body.Quntity;
+        const product = await Product.findByIdAndUpdate(productId, {"productName":"ihpone16"});
+       res.status(202).json({product,message:"Product Update Succeccfully..."});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg:"Internal server erorr"});
+    }
+}
+
+exports.DeleteProduct = async (req,res)=>{
+    try {
+        const productId = req.body.productId;
+        const product = await Product.findByIdAndDelete(productId);
+        res.status(204).json({message:"Product Delete SuccessFully..."})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg:"Internal Server Error..."});
+    }
+}
