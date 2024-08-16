@@ -78,26 +78,57 @@ exports.getProduct = async (req,res)=>{
     }
 };
 
+// exports.UpdateProduct = async (req,res)=>{
+//     try {
+//         const productId = req.body.productId;
+//         // const updateProductName = req.body.productName;
+//         // const updateQuntity = req.body.Quntity;
+//         const product = await Product.findByIdAndUpdate(productId, {"productName":"ihpone16"});
+//        res.status(202).json({product,message:"Product Update Succeccfully..."});
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({msg:"Internal server erorr"});
+//     }
+// }
+
 exports.UpdateProduct = async (req,res)=>{
     try {
-        const productId = req.body.productId;
-        // const updateProductName = req.body.productName;
-        // const updateQuntity = req.body.Quntity;
-        const product = await Product.findByIdAndUpdate(productId, {"productName":"ihpone16"});
-       res.status(202).json({product,message:"Product Update Succeccfully..."});
+        let product = await Product.findOne({_id:req.query.productId});
+        if(!product){
+            return res.status(404).json({message:'Product not Found...'});
+        }
+        product = await Product.updateOne({_id:req.query.productId},{$set:req.body},{new:true});
+        // product.save();
+        res.status(202).json({product,message:"Product Updatew Success"})
     } catch (error) {
         console.log(error);
-        res.status(500).json({msg:"Internal server erorr"});
+        res.status(500).json({message:"Internal Server Error"});
     }
 }
 
+
+// exports.DeleteProduct = async (req,res)=>{
+//     try {
+//         const productId = req.body.productId;
+//         const product = await Product.findByIdAndDelete(productId);
+//         res.status(204).json({product,message:"Product Delete SuccessFully..."})
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({msg:"Internal Server Error..."});
+//     }
+// }
+
 exports.DeleteProduct = async (req,res)=>{
     try {
-        const productId = req.body.productId;
-        const product = await Product.findByIdAndDelete(productId);
-        res.status(204).json({message:"Product Delete SuccessFully..."})
+        let product = await Product.findById(req.query.userId);
+        if(!product){
+            return res.status(404).json({message:"Product Not Found..."});
+        }
+        product = await Product.deleteOne({_id:product._id});
+        res.status(200).json({product,message:"Product Delete Success"});
+        
     } catch (error) {
         console.log(error);
-        res.status(500).json({msg:"Internal Server Error..."});
+        res.status(500).json({message:"Internal Server Error"})
     }
 }
