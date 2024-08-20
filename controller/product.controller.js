@@ -49,9 +49,15 @@ const Product = require("../model/product.model");
 
 exports.addNewProduct = async (req, res) => {
     try {
-        const product = await Product.create({ ...req.body });
-        res.status(201).json({'messege':"Product Added"})      
-        json({ product, message: "New Product Added SuccesFully" });
+        const { productName, productPrice, Validity, Quntity } = req.body;
+        let product = await Product.findOne({productName:productName,isDelete:false})
+        if(product)
+            return res.status(400).json({message:"Product Alreday Exist..."})
+        product = await Product.create({
+            productName, productPrice, Validity, Quntity,
+        });
+        product.save();
+        res.status(201).json({product,messege:"Product Added"})      
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal Server Error" })
@@ -60,7 +66,7 @@ exports.addNewProduct = async (req, res) => {
 
 exports.getAllProducts = async(req,res)=>{
     try {
-        const product = await Product.find();
+        const product = await Product.find({isDelete:false});
         res.status(200).json(product);
     } catch (error) {
         console.log(error);
@@ -120,11 +126,15 @@ exports.UpdateProduct = async (req,res)=>{
 
 exports.DeleteProduct = async (req,res)=>{
     try {
-        let product = await Product.findById(req.query.userId);
+        let product = await Product.findOne({_id:req.query.userId},{isDelete:false});
         if(!product){
             return res.status(404).json({message:"Product Not Found..."});
         }
-        product = await Product.deleteOne({_id:product._id});
+        product = await Product.deleteOne(
+            product._id,
+            {$set:{isDelete:true}},
+            {new:true}
+        );;
         res.status(200).json({product,message:"Product Delete Success"});
         
     } catch (error) {

@@ -11,7 +11,12 @@ const userSchema = mongoose.Schema({
     Quntity:{
         type:Number,
     },
+    isDelete:{
+        type:Boolean,
+        default:false
+    }
 });
 
 module.exports = mongoose.model('product',userSchema)
+
 

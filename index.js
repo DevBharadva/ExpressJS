@@ -1,4 +1,3 @@
-/* Day-07 - MVC Folder Strucer (MVC - Model-View-Controller) */
 
 const express = require('express');
 const app = express();
@@ -6,8 +5,12 @@ const morgan = require('morgan');
 const productRoutes = require('./routes/product.routes');
 const { mongoose } = require('mongoose');
 
+require('dotenv').config()
+port= process.env.PORT
+const uri = process.env.MODEL_URI
+
 mongoose
-    .connect("mongodb://127.0.0.1:27017/NewProduct")
+    .connect(uri)
     .then(() => console.log(`Database connection successFully...`))
     .catch(err => console.log(err))
 
@@ -21,6 +24,6 @@ app.get('/', (req, res) => {
 
 app.use("/api/product", productRoutes);
 
-app.listen(1020, () => {
+app.listen(port, () => {
     console.log("Own server started");
 })

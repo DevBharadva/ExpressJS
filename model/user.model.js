@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
         type:String,
     },
     password:{
-        type:Number,
+        type:String,
     },
     age:{
         type:Number,
@@ -17,6 +17,10 @@ const userSchema = mongoose.Schema({
     Address:{
         line1:String,
         line2:String
+    },
+    isDelete:{
+        type:Boolean,
+        default:false
     }
 })
 
