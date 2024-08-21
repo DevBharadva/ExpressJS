@@ -4,10 +4,12 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose')
+
 require('dotenv').config()
 port= process.env.PORT
 const uri = process.env.MODEL_URI
 
+ 
 
 mongoose
 .connect(uri)

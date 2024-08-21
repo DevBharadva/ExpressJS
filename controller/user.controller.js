@@ -1,5 +1,6 @@
 const User = require("../model/user.model");
 const bcrypt = require('bcryptjs');
+const JsonWebToken = require('jsonwebtoken')
 
 exports.addNewUsers = async (req, res) => {
     try {
@@ -125,9 +126,19 @@ exports.Login = async (req,res)=>{
             if(!matchpasword){
                 return res.status(400).json({message:"Email Or Password not Matched..."});
             }
-            res.status(200).json({message:"Login Success",user});
+            let token = await JsonWebToken.sign({userId:user._id},process.env.JWT_SECRET);
+            res.status(200).json({message:"Login Success",token});
     } catch (err) {
         console.log(err);
         res.status(500).json({message:"Internal Server Error"});
     }
 };
+
+exports.userProfile = async (req,res)=>{
+    try {
+        res.status(200).json(req.user);
+    } catch (err) {
+        console.log(err);
+        res.status(json({message:"Internal Server Error"}));
+    }
+}
