@@ -14,6 +14,9 @@ const userSchema = mongoose.Schema({
     age:{
         type:Number,
     },
+    progileImage:{
+        type:String,
+    },
     Address:{
         line1:String,
         line2:String

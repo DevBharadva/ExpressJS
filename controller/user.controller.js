@@ -86,20 +86,25 @@ exports.deleteUser = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
+        let imagePath = "";
         let user = await User.findOne({ email: req.body.email, isDelete: false });
         if (user) {
-            return res.status(400).json({ message: "User Not Found" });
+            return res.status(400).json({ message: "User Alerdy Exixst.."});
+        }
+        if(req.file){
+            imagePath = req.file.path.replace(/\\/g,"/");
         }
         let hashpassword = await bcrypt.hash(req.body.password, 10);
-        user = await User.create({ ...req.body, password: hashpassword });
+
+        user = await User.create({ ...req.body, password: hashpassword,progileImage:imagePath});
         user.save();
         res.status(201).json({ user, message: 'User Registartion SuccessFul...' });
+
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
-
 
 exports.Login = async (req, res) => {
     try {
@@ -182,11 +187,11 @@ exports.changePassword = async (req, res) => {
     }
 }
 
-exports.forgetPassword = async (req,res)=>{
-    try {
+// exports.forgetPassword = async (req,res)=>{
+//     try {
         
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({message:"Internal Server Error"})
-    }
-}
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).json({message:"Internal Server Error"})
+//     }
+// }

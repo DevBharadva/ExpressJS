@@ -1,15 +1,15 @@
-/* Day-06 */
 
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose')
+const path = require('path')
 
 require('dotenv').config()
 port= process.env.PORT
 const uri = process.env.MODEL_URI
 
- 
+app.use('/public/images',express.static(path.join(__dirname,'public/images'))) 
 
 mongoose
 .connect(uri)
