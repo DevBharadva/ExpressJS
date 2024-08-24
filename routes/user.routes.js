@@ -1,27 +1,41 @@
 const express = require('express');
-
+const { Login } = require('../controller/user.controller')
 const userRoutes = express.Router();
+const passport = require('passport');
+const session = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
+userRoutes.use(passport.initialize());
+userRoutes.use(passport.session());
 
-const { addNewUsers, getAllUser, getUser, UpdateUser, deleteUser, register, Login, userProfile, updateProfile, deleteProfile, changePassword } = require('../controller/user.controller');
-const { verifyToken } = require('../helpers/tokenVerify');
-const { upload } = require('../helpers/imageUpload');
+userRoutes.get('/',(req,res,next)=>{
+    res.send('<h1>Welcome to Home Page</h1> <p>Please <a href="/login">Login Now</a></p>')
+    next();
+})
 
-userRoutes.post("/", addNewUsers);
+passport.use(new LocalStrategy({
+  usernameField: 'email'
+},
+function(email, password, done) {
+  User.findOne({ email: email }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false, { message: 'Incorrect email.' }); }
+      bcrypt.compare(password, user.password, function(err, isMatch) {
+          if (err) { return done(err); }
+          if (!isMatch) { return done(null, false, { message: 'Incorrect password.' }); }
+          return done(null, user);
+      });
+  });
+}));
 
-userRoutes.get("/", getAllUser)
-userRoutes.get("/get-user", getUser)
 
-userRoutes.patch("/update", UpdateUser)
-userRoutes.delete("/delete", deleteUser)
+userRoutes.get('/login', 
+    passport.authenticate('local', { failureRedirect: '/login'}),
+    function(req, res) {
+      res.redirect('/');
+    });
+// userRoutes.get('/login',Login);
 
-userRoutes.post('/register',upload.single('progileImage'), register);
-userRoutes.post('/login', Login);
 
-userRoutes.get('/me', verifyToken, userProfile);
-
-userRoutes.put('/update-profile', verifyToken, updateProfile);
-userRoutes.delete('/delete-profile', verifyToken, deleteProfile);
-
-userRoutes.post('/change-password', changePassword);
+      userRoutes.post('/register',)
 
 module.exports = userRoutes;

@@ -1,15 +1,29 @@
+require('dotenv').config()
 
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose')
 const path = require('path')
+const passport = require('passport');
+const session = require('express-session');
+const ejs = require('ejs');
+const secret = process.env.JWT_SECRET
+app.set("view engine",'ejs')
+const router = require("./routes/user.routes")
 
-require('dotenv').config()
 port= process.env.PORT
 const uri = process.env.MODEL_URI
-
+app.use(session({ 
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true
+ }));
 app.use('/public/images',express.static(path.join(__dirname,'public/images'))) 
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 mongoose
 .connect(uri)
@@ -17,16 +31,12 @@ mongoose
 .catch(err=>console.log(err));
 
 app.use(express.json());
-
 app.use(morgan('dev'))
-
-app.get('/',(req,res)=>{
-    res.end('Welcome to Your own server');
-})
 
 const userRoutes = require('./routes/user.routes')
 
-app.use('/api/user',userRoutes)
+// app.get('/',userRoutes)
+app.use("/api",userRoutes)
 
 app.listen(port,()=>{
     console.log(`server star`);   

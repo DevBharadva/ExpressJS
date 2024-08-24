@@ -9,14 +9,15 @@ require('dotenv').config()
 port= process.env.PORT
 const uri = process.env.MODEL_URI
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+
 mongoose
     .connect(uri)
     .then(() => console.log(`Database connection successFully...`))
     .catch(err => console.log(err))
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
     res.end("Welcome to Express Server");
