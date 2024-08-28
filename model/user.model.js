@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    firstName:String,
-    lastName:{
+    userName:{
         type:String,
     },
     email:{
@@ -11,16 +10,19 @@ const userSchema = mongoose.Schema({
     password:{
         type:String,
     },
-    age:{
-        type:Number,
-    },
-    progileImage:{
+    password2:{
         type:String,
     },
-    Address:{
-        line1:String,
-        line2:String
-    },
+    // age:{
+    //     type:Number,
+    // },
+    // progileImage:{
+    //     type:String,
+    // },
+    // Address:{
+    //     line1:String,
+    //     line2:String
+    // },
     isDelete:{
         type:Boolean,
         default:false

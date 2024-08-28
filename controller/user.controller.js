@@ -1,52 +1,41 @@
 const User = require("../model/user.model");
 const bcrypt = require('bcryptjs');
-const JsonWebToken = require('jsonwebtoken')
+// const JsonWebToken = require('jsonwebtoken');
+const passport = require('passport')
 
 /*----------------- TodoList With PassPort & EJS ---------------------*/
 
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  console.log('Login attempt:',  req.body);
+  res.render('todolist');
+};
+
 exports.register = async (req, res) => {
     try {
-        let user = await User.findOne({ email: req.body.email, isDelete: false });
-        if (user) {
-            return res.status(400).json({ message: "User Alerdy Exixst.." });
-        }
-        let hashpassword = await bcrypt.hash(req.body.password, 10);
-        user = await User.create({ ...req.body, password: hashpassword, progileImage: imagePath });
-        user.save();
-        res.status(201).json({ user, message: 'User Registartion SuccessFul...' });
 
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-};
+      let user = await User.findOne({ email: req.body.email, isDelete: false });
 
-exports.Login = async (req, res) => {
-    try {
-        let user = await User.findOne({ email: req.body.email, isDelete: false });
-        if (!user) {
-            return res.render('login')
-        }
-        // let matchpasword = await bcrypt.compare(req.body.password, user.password);
-        // if (!matchpasword) {
-            // return res.status(400).json({ message: "Email Or Password not Matched..." });
-        // }
-        // let token = await JsonWebToken.sign({ userId: user._id }, process.env.JWT_SECRET);
-        res.status(200).json({ message: "Login Success" });
+      if (user) {
+        return res.status(400).json({ message: "User Already Exists." });
+      }
+      let hashpassword = await bcrypt.hash(req.body.password, 10);
+      user = await User.create({ ...req.body, password: hashpassword });
+      console.log(user);
+    //   res.json({mes:"user added"})
+      res.render('todolist');
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+      // Send error response once
+      console.error(err);
+      res.render('register');
     }
-};
+  };
+  
 
-exports.userProfile = async (req, res) => {
-    try {
-        res.status(200).json(req.user);
-    } catch (err) {
-        console.log(err);
-        res.status(json({ message: "Internal Server Error" }));
-    }
+exports.todolist = async (req,res)=>{
+    res.render('todolist');
 }
+
 
 exports.updateProfile = async (req, res) => {
     try {
@@ -102,49 +91,27 @@ exports.changePassword = async (req, res) => {
     }
 }
 
-// exports.forgetPassword = async (req,res)=>{
+// exports.specialUser = async (req, res) => {
 //     try {
+//         let user = {
+//             firstName: "Dev",
+//             lastName: "Bharadva",
+//             email: "Dev@dev.in",
+//             mobileNo: "4959697878",
+//             Address: {
+//                 line1: "City Center",
+//                 line2: "Amroli Surat"
+//             }
+//         }
+//         // let user = await User.findOne({firstName:req.query.name,isDelete:false})
+//         if (!user) {
 
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json({message:"Internal Server Error"})
+//             return res.render('user.ejs', { user });
+//         }
+
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: "Internla Server Erorr" });
 //     }
 // }
 
-exports.specialUser = async (req, res) => {
-    try {
-        let user = {
-            firstName: "Dev",
-            lastName: "Bharadva",
-            email: "Dev@dev.in",
-            mobileNo: "4959697878",
-            Address: {
-                line1: "City Center",
-                line2: "Amroli Surat"
-            }
-        }
-        // let user = await User.findOne({firstName:req.query.name,isDelete:false})
-        if (!user) {
-
-            return res.render('user.ejs', { user });
-        }
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internla Server Erorr" });
-    }
-}
-
-exports.user = async(req,res)=>{
-    try {
-
-        let user = await User.findOne({firstName:req.query.name,isDelete:false})
-
-        if(!user){
-            return res.render('user.ejs', { user });
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message:"internal Server error"})
-    }
-}
