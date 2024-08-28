@@ -1,5 +1,5 @@
 const express = require('express');
-const { Login } = require('../controller/user.controller')
+const { Login, register, user } = require('../controller/user.controller')
 const userRoutes = express.Router();
 const passport = require('passport');
 const session = require('express-session');
@@ -13,10 +13,10 @@ userRoutes.get('/',(req,res,next)=>{
 })
 
 passport.use(new LocalStrategy({
-  usernameField: 'email'
-},
-function(email, password, done) {
-  User.findOne({ email: email }, function (err, user) {
+  usernameField: 'email',
+  passwordField:'password'},
+async function(email, password, done) {
+  await User.findOne({ email: email }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Incorrect email.' }); }
       bcrypt.compare(password, user.password, function(err, isMatch) {
@@ -28,14 +28,16 @@ function(email, password, done) {
 }));
 
 
-userRoutes.get('/login', 
+userRoutes.post('/login', 
     passport.authenticate('local', { failureRedirect: '/login'}),
     function(req, res) {
       res.redirect('/');
     });
-// userRoutes.get('/login',Login);
 
+userRoutes.get('/login',Login);
 
-      userRoutes.post('/register',)
+userRoutes.get('/user',user);
+
+      // userRoutes.get('/register',register)
 
 module.exports = userRoutes;

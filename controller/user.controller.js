@@ -25,7 +25,7 @@ exports.Login = async (req, res) => {
     try {
         let user = await User.findOne({ email: req.body.email, isDelete: false });
         if (!user) {
-            return res.render('login.ejs',{user})
+            return res.render('login')
         }
         // let matchpasword = await bcrypt.compare(req.body.password, user.password);
         // if (!matchpasword) {
@@ -132,5 +132,19 @@ exports.specialUser = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internla Server Erorr" });
+    }
+}
+
+exports.user = async(req,res)=>{
+    try {
+
+        let user = await User.findOne({firstName:req.query.name,isDelete:false})
+
+        if(!user){
+            return res.render('user.ejs', { user });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"internal Server error"})
     }
 }
