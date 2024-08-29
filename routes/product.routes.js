@@ -12,7 +12,7 @@ const { addNewProduct,getAllProducts,getProduct,UpdateProduct,DeleteProduct } = 
 // } = require('../controller/product.controller');
 
 // Add New Product - Create
-productRoutes.post('/', addNewProduct)
+productRoutes.post('/addproduct', addNewProduct)
 
 // Get All Products - Read
 productRoutes.get('/',getAllProducts)

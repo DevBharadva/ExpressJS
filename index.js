@@ -4,9 +4,10 @@ const app = express();
 const morgan = require('morgan');
 const productRoutes = require('./routes/product.routes');
 const { mongoose } = require('mongoose');
+const { addToCart } = require('./controller/car.controller');
 
 require('dotenv').config()
-port= process.env.PORT
+// port= process.env.PORT
 const uri = process.env.MODEL_URI
 
 mongoose
@@ -23,7 +24,8 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/product", productRoutes);
+app.use('/cart',addToCart)
 
-app.listen(port, () => {
+app.listen(4444, () => {
     console.log("Own server started");
 })
