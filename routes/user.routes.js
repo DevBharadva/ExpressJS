@@ -1,29 +1,29 @@
+require('../helpers/passport');
 const express = require('express');
-const { login, register, todolist } = require('../controller/user.controller')
+const {  register } = require('../controller/user.controller')
 const userRoutes = express.Router();
 const passport = require('passport');
-const { isAuthenticated } = require('../helpers/passport');
-userRoutes.use(passport.initialize());
-userRoutes.use(passport.session());
+
 
 userRoutes.get('/', (req, res, next) => {
     res.send('<h1>Welcome to Home Page</h1> <p>Please <a href="/login">Login Now</a></p>')
     next();
 })
 
-userRoutes.post('/login',
-    passport.authenticate('local', { failureRedirect: '/register' }),
-    function (req, res) {
-        res.redirect('/todolist');
-    });
+userRoutes.post('/login', passport.authenticate('local', {
+        successRedirect: "todolist", 
+        failureRedirect: 'register' 
+        }));
 
-
-userRoutes.get('/login', login);
+userRoutes.get('/login', (req,res)=>{
+    res.render('login')
+});
 
 userRoutes.post('/register',register)
 userRoutes.get('/register', register);
 
-
-userRoutes.get('/todolist',isAuthenticated,todolist)
+userRoutes.get('/todolist',
+    res.render('todolist')
+)
 
 module.exports = userRoutes;

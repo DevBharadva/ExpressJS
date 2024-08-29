@@ -1,30 +1,46 @@
-// const bcrypt = require('bcrypt')
-// const User = require('../model/user.model');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('../model/user.model'); // Replace with your User model
+const bcrypt = require('bcrypt')
 
+passport.use(new LocalStrategy(
+  {
+    email: 'email',  
+    password: 'password' 
+  },
+  async (email, password, done) => {
+    try {
+      // Find the user by email
+      const user = await User.findOne({ email: email });
 
-// exports.passport = async function (email, password, done) {
+      if (!user) {
+        return done(null, false, { message: 'Incorrect email or password.' });
+      }
 
-//     await User.findOne({ email: email }, function (err, user) {
+      // Validate password (assuming you have a method to validate passwords)
+      const isMatch = await bcrypt.compare(password,user.password)
+      if (!isMatch) {
+        return done(null, false, { message: 'Incorrect email or password.' });
+      }
 
-//         if (err) { return done(err); }
+      // If everything is fine, return the user
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
 
-//         if (!user) { return done(null, false, { message: 'Incorrect email.' }); }
+// Serialize and deserialize user (required for persistent sessions)
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
-//         bcrypt.compare(password, user.password, function (err, isMatch) {
-
-//             if (err) { return done(err); }
-
-//             if (!isMatch) { return done(null, false, { message: 'Incorrect password.' }); }
-
-//             return done(null, user);
-
-//         });
-//     });
-// }
-
-exports.isAuthenticated = (req,res,next)=>{
-    if(req.isAuthenticated())
-        return next();
-    res.redirect('/login')
-}
-
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id).exec();
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
