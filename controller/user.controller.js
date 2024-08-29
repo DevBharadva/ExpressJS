@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
       let hashpassword = await bcrypt.hash(req.body.password, 10);
       user = await User.create({ ...req.body, password: hashpassword });
       console.log(user);
-      res.redirect('todolist');
+      res.status(201).redirect('todolist');
     } catch (err) {
       // Send error response once
       console.error(err);
