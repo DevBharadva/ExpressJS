@@ -3,8 +3,9 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const productRoutes = require('./routes/product.routes');
+const userRoutes = require('./routes/user.routes')
 const { mongoose } = require('mongoose');
-const { addToCart } = require('./controller/car.controller');
+const router = require('./routes/cart.routes');
 
 require('dotenv').config()
 // port= process.env.PORT
@@ -24,7 +25,8 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/product", productRoutes);
-app.use('/cart',addToCart)
+app.use('/api/user',userRoutes)
+app.use('/api/cart',router)
 
 app.listen(4444, () => {
     console.log("Own server started");

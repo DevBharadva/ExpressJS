@@ -12,9 +12,9 @@ exports.verifyToken = async(req,res,next)=>{
         if(!userId){
             return res.status(401).json({message:'unauthorized'});
         }
-        let user = await User.findOne({_id:payload.userId,isDelete:false});
+        let user = await User.findOne({_id:userId,isDelete:false});
         if(!user){
-            return res.status(404).json({_id:payload.userId,isDelete:false});
+            return res.status(404).json({_id:userId,isDelete:false});
         }
         req.user = user;
         next();
