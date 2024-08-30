@@ -3,44 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User TodoList</title>
+    <title>Todo List</title>
 </head>
 <body>
+    <h1>todo list</h1>
     <div>
-        
-        <h1>User TodoList </h1>
-        <div>
-            <table>
-              <thead >
+        <table>
+            <thead>
                 <tr>
-                  <th>
-                    UserName
-                  </th>
-                  2134
-                  <th> 
-                    email
-                  </th>
-                  <th> 
-                    MobileNo
-                  </th>
+                    <th>userName</th>
+                    <th>email</th>
+                    <th>MobileNo</th>
                 </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td>
-                      Dev
-                    </td>
-                    <td>
-                      Bharadva
-                    </td>
-                    <td>
-                      1234353456565
-                    </td>
-                  </tr>
-            
-              </tbody>
-            </table>
-            </div>
+            </thead>
+            <tbody>
+                <% users.forEach(function(users) { %>
+                    <tr>
+                         <td><%= users.username %></td>  
+                         <td><%= users.email %></td>  
+                         <td><%= users.mobileNo %></td>  
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

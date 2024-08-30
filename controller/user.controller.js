@@ -5,12 +5,6 @@ const passport = require('passport')
 
 /*----------------- TodoList With PassPort & EJS ---------------------*/
 
-// exports.login = async (req, res) => {
-//   const { email, password } = req.body;
-//   console.log('Login attempt:',  req.body);
-//   res.render('login');
-// };
-
 exports.register = async (req, res) => {
     try {
 
@@ -21,8 +15,8 @@ exports.register = async (req, res) => {
       }
       let hashpassword = await bcrypt.hash(req.body.password, 10);
       user = await User.create({ ...req.body, password: hashpassword });
-      console.log(user);
-      res.status(201).redirect('todolist');
+      // console.log(user);
+      res.status(201).redirect('user');
     } catch (err) {
       // Send error response once
       console.error(err);
@@ -30,9 +24,21 @@ exports.register = async (req, res) => {
     }
   };
 
-// exports.todolist = async (req,res)=>{
-//     res.redirect('todolist');
-// }
+exports.todolist = async (req,res)=>{
+    try {
+      console.log("hii");
+        const users = await User.find({});
+        if (users.length > 0) {
+          console.log(users);
+          return res.render('user', { users });  // Pass the users array to the EJS template
+      } else {
+          res.status(400).send("No users found");
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({mesg:"internal Server Error"})
+    }
+}
 
 // exports.updateProfile = async (req, res) => {
 //     try {
