@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>My Blog</h3>
+    <form action="/api/blog/" method="post">
+        <label for="title">Blog Title: </label>
+        <input type="text" name="title" id="title">
+        <br>
+        <label for="description">Blog Description: </label>
+        <input type="text" name="description" id="description" placeholder="Enter your description">
+        <br>
+        <button type="submit">Add Blog</button>
+    </form>
+
+    <br><br><br>
+    <hr>
+    <table>
+        <thead>
+            <th>Sr No.</th>
+            <th>Blog Title</th>
+            <th>Blog Description</th>
+        </thead>
+        <tbody>
+            <% for(let i = 0; i < blogs.length; i++) {%>
+                <tr>
+                    <td><%= i+1 %></td>
+                    <td><%= blogs[i].title %></td>
+                    <td><%= blogs[i].description %></td>
+                </tr>
+                <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
