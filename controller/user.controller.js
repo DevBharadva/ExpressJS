@@ -29,9 +29,9 @@ exports.registerUser = async (req, res) => {
 
         await user.save();
 
-        res.status(201).json({ user, message: "User registered successfully" });
+        // res.status(201).json({ user, message: "User registered successfully" });
         // Optionally, you can redirect to the login page
-        // res.redirect("/api/user/login");
+        res.redirect("/login");
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error" });
@@ -54,7 +54,7 @@ exports.loginUser = async (req, res) => {
             return res.redirect("/api/user/login");  // Redirect to login page if user not found
         }
 
-        console.log(user);
+        // console.log(user);
 
         let matchPassword = await bcrypt.compare(req.body.password, user.password);
         if (!matchPassword) {
@@ -64,10 +64,10 @@ exports.loginUser = async (req, res) => {
         let token = JsonWebToken.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         // Set token in cookies or in localStorage (depending on your client setup)
-        res.cookie('auth_token', token, { httpOnly: true });  // Using cookies for token storage
+        res.cookie('auth_token', `${token}`);  // Using cookies for token storage
 
         // Redirect to blog page after successful login
-        res.redirect('/api/blog');
+        res.redirect('/blog');
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error" });

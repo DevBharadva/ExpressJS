@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const morgan = require('morgan');
 const port = process.env.PORT || 8000;
 const dbURL = process.env.MONGO_URI;
+const cookies = require('cookie-parser');
 
 // view engine setup
 app.set("view engine", 'ejs');
@@ -13,20 +14,32 @@ app.set("view engine", 'ejs');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookies());
 
 // Routes
 const userRoutes = require('./routes/user.routes');
 const blogRoutes = require('./routes/blog.routes');
+const { verifyToken } = require('./middleware/auth');
 
-app.use("/api/user", userRoutes);
+
+// app.use("/api/user", userRoutes);
+// app.use('/api/blog',blogRoutes)
 
 // Protect blog routes with authentication middleware (assume it's written)
-const authMiddleware = require('./middleware/auth');  // Ensure this middleware is created
-app.use("/api/blog", authMiddleware, blogRoutes);
 
-// Root route
+
+// // Root route
 app.get("/", (req, res) => {
-    res.redirect("/api/user/register");
+    res.render("register.ejs");
+});
+
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
+});
+
+app.get("/blog",verifyToken, (req, res) => {
+    console.log('Hello wolrd ----------------------------------------------------------');
+    res.render("blog.ejs");
 });
 
 // Database connection and server start

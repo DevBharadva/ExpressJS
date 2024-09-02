@@ -17,7 +17,7 @@ exports.addBlog = async (req, res)=>{
             res.json({message: 'Already added'});
         }
         blog = await Blog.create(req.body);
-        res.redirect("/api/blog")
+        res.redirect("/blog")
     } catch (error) {
         console.log(error);
         res.json({messag: "Server error"});

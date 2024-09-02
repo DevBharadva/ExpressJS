@@ -1,10 +1,13 @@
 // routes/blog.routes.js
 const express = require('express');
-const { showBlogPage, addBlog } = require('../controller/blog.controller');
-const authMiddleware = require('../middleware/auth');  // Import authentication middleware
 const blogRoutes = express.Router();
+const { showBlogPage, addBlog } = require('../controller/blog.controller');
+const {verifyToken} = require('../middleware/auth');  // Import authentication middleware
 
-blogRoutes.get("/", authMiddleware, showBlogPage);  // Apply middleware here
-blogRoutes.post("/", authMiddleware, addBlog);  // Apply middleware here
+// blogRoutes.use("/", verifyToken);
+
+blogRoutes.get("/", verifyToken, showBlogPage);  // Apply middleware here
+blogRoutes.post("/", verifyToken, addBlog);  // Apply middleware here
+
 
 module.exports = blogRoutes;
