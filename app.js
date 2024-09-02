@@ -19,28 +19,30 @@ app.use(cookies());
 // Routes
 const userRoutes = require('./routes/user.routes');
 const blogRoutes = require('./routes/blog.routes');
-const { verifyToken } = require('./middleware/auth');
+// const { verifyToken } = require('./middleware/auth');
 
-
-// app.use("/api/user", userRoutes);
-// app.use('/api/blog',blogRoutes)
+app.use("/api/user", userRoutes);
+app.use('/api/blog',blogRoutes);
 
 // Protect blog routes with authentication middleware (assume it's written)
 
 
 // // Root route
-app.get("/", (req, res) => {
-    res.render("register.ejs");
-});
+// app.get("/", (req, res) => {
+//     res.render("register.ejs");
+// });
 
-app.get("/login", (req, res) => {
-    res.render("login.ejs");
-});
+// app.get("/login", (req, res) => {
+//     console.log("hello world------------");
+//     res.render("login.ejs");
+// });
 
-app.get("/blog",verifyToken, (req, res) => {
-    console.log('Hello wolrd ----------------------------------------------------------');
-    res.render("blog.ejs");
-});
+// app.get("/blog",verifyToken, (req, res) => {
+//     console.log('Hello wolrd ----------------------------------------------------------');
+//     res.render("blog.ejs");
+// });
+
+
 
 // Database connection and server start
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })

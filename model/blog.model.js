@@ -7,6 +7,10 @@ const blogSchema  = mongoose.Schema({
     description: {
         type: String
     },
+    Date:{
+        type:Date,
+        default:Date.now
+    }
 },{
     versionKey: false
 });

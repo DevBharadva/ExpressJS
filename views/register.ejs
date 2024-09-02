@@ -3,25 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        p {
+            text-align: center;
+            color: #6c757d;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Regsiter Form</h1>
     <form action="/api/user/register" method="post">
-        <label for="firstname">FirstName: </label>
-        <input type="text" name="firstname" id="firstname" placeholder="Enter your firstname">
-        <br>
-        <label for="lastname">LastName: </label>
-        <input type="text" name="lastname" id="lastname" placeholder="Enter your lastname">
-        <br>
-        <label for="email">Email: </label>
+        <h1>Register Form</h1>
+        <label for="firstname">First Name:</label>
+        <input type="text" name="firstname" id="firstname" placeholder="Enter your first name">
+        <label for="lastname">Last Name:</label>
+        <input type="text" name="lastname" id="lastname" placeholder="Enter your last name">
+        <label for="email">Email:</label>
         <input type="text" name="email" id="email" placeholder="Enter your email">
-        <br>
-        <label for="password">Password: </label>
+        <label for="password">Password:</label>
         <input type="password" name="password" id="password" placeholder="Enter your password">
-        <br>
         <button type="submit">Register Now</button>
-        <p>if you are already exists so please <a href="login">login Now</a></p>
+        <p>If you already have an account, please <a href="login">Login Now</a></p>
     </form>
 </body>
 </html>

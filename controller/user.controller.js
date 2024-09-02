@@ -31,7 +31,7 @@ exports.registerUser = async (req, res) => {
 
         // res.status(201).json({ user, message: "User registered successfully" });
         // Optionally, you can redirect to the login page
-        res.redirect("/login");
+        res.redirect("/api/user/login");
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error" });
@@ -53,9 +53,7 @@ exports.loginUser = async (req, res) => {
         if (!user) {
             return res.redirect("/api/user/login");  // Redirect to login page if user not found
         }
-
         // console.log(user);
-
         let matchPassword = await bcrypt.compare(req.body.password, user.password);
         if (!matchPassword) {
             return res.redirect("/api/user/login");  // Redirect to login page if password mismatch
@@ -67,7 +65,7 @@ exports.loginUser = async (req, res) => {
         res.cookie('auth_token', `${token}`);  // Using cookies for token storage
 
         // Redirect to blog page after successful login
-        res.redirect('/blog');
+        res.redirect('/api/blog/');
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error" });
