@@ -8,8 +8,11 @@ exports.addNewProduct = async (req, res) => {
         
         if(product)
             return res.status(400).json({message:"Product Alreday Exist..."})
+
         product = await Productservice.addNewProduct({...req.body});
+
         product.save();
+        
         res.status(201).json({product,messege:"Product Added"})      
     } catch (error) {
         console.log(error);

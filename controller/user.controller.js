@@ -1,16 +1,15 @@
 const User = require("../model/user.model");
 const bcrypt = require('bcryptjs');
 const JsonWebToken = require('jsonwebtoken')
+const UserServices = require('../services/user.service')
+const userservice = new UserServices();
 
 exports.addNewUsers = async (req, res) => {
     try {
-        const { firstname, lastname, email, password, address, age, } = req.bpdy;
-        let user = await User.findOne({ email: email, isDelete: false });
+        let user = await User.findOne({ email: req.body.email, isDelete: false });
         if (user)
             return res.status(400).json({ message: "User alreday exist..." })
-        user = await User.create({
-            firstname, lastname, email, password, address, age,
-        });
+        user = await userservice.addNewUser({...req.body});
         user.save();
         res.status(201).json({ user, mesage: "User Added successFully" });
     } catch (error) {
