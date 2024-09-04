@@ -1,6 +1,6 @@
 const Cart = require('../model/cart.model');
 const CartServices = require('../services/cart.service')
-const CartServices = new CartServices();
+const cartservices = new CartServices();
 
 exports.addToCart = async (req, res) => {
     try {
@@ -13,7 +13,7 @@ exports.addToCart = async (req, res) => {
         if (cart) {
             return res.json({ message: "Already exists..." });
         }
-        cart = await CartServices.create({ user: userId, ...req.body });
+        cart = await cartservices.addtocart({ user: userId, ...req.body });
         res.status(201).json({ message: "Cart Added", cart });
     } catch (error) {
         console.log(error);
@@ -23,7 +23,7 @@ exports.addToCart = async (req, res) => {
 
 exports.getAllCarts = async (req,res)=>{
     try {
-        let carts = await CartServices.find({user:req.user._id,isDelete:false});
+        let carts = await cartservices.getallcart({...req.body})
         res.json(carts);
         res.status(200).send(carts);
     } catch (error) {
@@ -34,7 +34,7 @@ exports.getAllCarts = async (req,res)=>{
 
 exports.updateCart = async (req,res)=>{
     try {
-        let cart = await CartServices.updateOne({_id:req.query.cartId},{$set:{quantity:+req.query.quantity}},{new:true});
+        let cart = await cartservices.updatecart({_id:req.query.cartId},{$set:{quantity:+req.query.quantity}},{new:true});
         console.log(cart);
         if(!cart) {
             return res.status(404).json({msg:"Cart Not Found..."});
@@ -48,7 +48,7 @@ exports.updateCart = async (req,res)=>{
 
 exports.deleteCart = async  (req,res)=>{
     try {
-        let cart = await CartServices.updateOne({_id:req.user.cartId},{$set: {isDelete:true}},{ new:true });
+        let cart = await cartservices.updateOne({_id:req.user.cartId},{$set: {isDelete:true}},{ new:true });
         console.log(cart);
         if(!cart){
             return res.status(404).json({msg:"cart Not Found..."});
